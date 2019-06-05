@@ -45,10 +45,19 @@ module Locomotive
 
             def each_file(&block)
               Dir.glob(File.join(path, "**", "*.{#{template_extensions.join(',')}}")).each do |filepath|
-                slug, locale = filepath.sub(path, '').sub(/^\//,'').split('.')[0..1]
+                basename =  File.basename(filepath)
+                subfolder = filepath.sub(path, '').sub(/^\//, '').sub(basename, '')
+
+                slug, locale = basename.split('.')[0..1]
 
                 if template_extensions.include?(locale)
                   locale = default_locale 
+                end
+
+                slug = slug.permalink
+
+                if subfolder != ''
+                  slug.prepend(subfolder)
                 end
 
                 yield(filepath, slug, locale.to_sym)
