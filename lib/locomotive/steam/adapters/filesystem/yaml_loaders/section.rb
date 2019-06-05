@@ -15,9 +15,10 @@ module Locomotive
             private
 
             def load_list
-              Dir.glob(File.join(path, "*.{#{template_extensions.join(',')}}")).map do |filepath|
-                slug = File.basename(filepath).split('.').first
-                build(filepath, slug.permalink)
+              Dir.glob(File.join(path, "**", "*.{#{template_extensions.join(',')}}")).map do |filepath|
+                slug = filepath.sub(path, '').sub(/^\//,'').split('.').first
+
+                build(filepath, slug)
               end
             end
 
