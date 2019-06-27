@@ -41,6 +41,16 @@ module Locomotive::Steam
               definition['default'] = default
             end
 
+            definition['default'] ||= {}
+            definition['default']['settings'] ||= {}
+
+            # Fallback to use setting `default` key for section main settings, blocks already utilize this
+            definition['settings'].each do |setting|
+              if setting.key?('default') && !definition['default']['settings'].key?(setting['id'])
+                definition['default']['settings'][setting['id']] = setting['default']
+              end
+            end
+
             definition
           end
 
