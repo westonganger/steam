@@ -52,11 +52,11 @@ module Locomotive::Steam
             definition['default'] ||= {}
             definition['default']['settings'] ||= {}
             definition['default']['blocks'] ||= []
-            definition['default']['blocks'].times do |i|
+            definition['default']['blocks'].each_index do |i|
               definition['default']['blocks'][i]['settings'] ||= {}
             end
             definition['blocks'] ||= []
-            definition['blocks'].times do |i|
+            definition['blocks'].each_index do |i|
               definition['blocks'][i]['settings'] ||= {}
             end
 
