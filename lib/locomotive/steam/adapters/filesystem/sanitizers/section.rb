@@ -70,9 +70,11 @@ module Locomotive::Steam
             definition['default']['blocks'].each_with_index do |default_block, i|
               type_block_def = definition['blocks'].detect{|x| x['type'] == default_block['type']}
 
-              type_block_def['settings'].each do |setting|
-                if setting.key?('default') && !default_block['settings'].key?(setting['id'])
-                  definition['default']['blocks'][i]['settings'][setting['id']] = setting['default']
+              if type_block_def
+                type_block_def['settings'].each do |setting|
+                  if setting.key?('default') && !default_block['settings'].key?(setting['id'])
+                    definition['default']['blocks'][i]['settings'][setting['id']] = setting['default']
+                  end
                 end
               end
             end
