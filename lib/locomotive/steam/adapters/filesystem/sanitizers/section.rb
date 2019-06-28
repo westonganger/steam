@@ -25,13 +25,13 @@ module Locomotive::Steam
               begin
                 entity.definition = handle_aliases(Hjson.parse(json))
               rescue Hjson::Error => e
-                raise Locomotive::Steam::JsonParsingError.new(e, path, json)
+                raise Locomotive::Steam::JsonParsingError.new(e, entity.template_path, json)
               end
             else
               begin
                 entity.definition = handle_aliases(MultiJson.load(json))
               rescue MultiJson::ParseError => e
-                raise Locomotive::Steam::JsonParsingError.new(e, path, json)
+                raise Locomotive::Steam::JsonParsingError.new(e, entity.template_path, json)
               end
             end
 

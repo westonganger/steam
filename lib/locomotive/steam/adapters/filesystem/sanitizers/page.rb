@@ -164,13 +164,13 @@ module Locomotive::Steam
                   begin
                     page[name][locale] = Hjson.parse(content)
                   rescue Hjson::Error => e
-                    raise Locomotive::Steam::JsonParsingError.new(e, path, json)
+                    raise Locomotive::Steam::JsonParsingError.new(e, page.template_path[locale], content)
                   end
                 else
                   begin
                     page[name][locale] = MultiJson.load(content)
                   rescue MultiJson::ParseError => e
-                    raise Locomotive::Steam::JsonParsingError.new(e, path, json)
+                    raise Locomotive::Steam::JsonParsingError.new(e, page.template_path[locale], content)
                   end
                 end
 
