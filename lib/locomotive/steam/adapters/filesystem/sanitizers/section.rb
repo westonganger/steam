@@ -44,8 +44,11 @@ module Locomotive::Steam
             definition['default'] ||= {}
             definition['default']['settings'] ||= {}
             definition['default']['blocks'] ||= []
+            definition['default']['blocks'].times do |i|
+              definition['default']['blocks'][i]['settings'] ||= {}
+            end
             definition['blocks'] ||= []
-            definition['blocks'].each_with_index do |_, i|
+            definition['blocks'].times do |i|
               definition['blocks'][i]['settings'] ||= {}
             end
 
