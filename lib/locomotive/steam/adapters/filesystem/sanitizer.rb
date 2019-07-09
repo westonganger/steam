@@ -9,6 +9,11 @@ module Locomotive::Steam
         def_delegators :@scope, :site, :locale, :locales, :default_locale
 
         attr_reader :scope
+        attr_reader :site_path
+
+        def initialize(site_path)
+          @site_path = site_path
+        end
 
         def setup(scope)
           @scope = scope
