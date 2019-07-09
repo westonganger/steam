@@ -42,8 +42,8 @@ module Locomotive::Steam
 
               attributes ||= {}
 
-              if custom_field_types.present? && attributes['type'].present?
-                custom_field_type = custom_field_types.detect{|x| x[:slug] == attribute['type']}
+              if custom_field_types.present? && attributes[:type].present?
+                custom_field_type = custom_field_types.detect{|x| x[:slug] == attributes[:type]}
 
                 if custom_field_type
                   attributes = custom_field_type[:definition].merge(attributes)
