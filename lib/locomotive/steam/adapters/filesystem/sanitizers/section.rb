@@ -6,6 +6,8 @@ module Locomotive::Steam
 
           include Adapters::Filesystem::Sanitizer
 
+          attr_accessor :custom_setting_types
+
           def apply_to_entity(entity)
             super
             parse_json(entity)
@@ -42,11 +44,13 @@ module Locomotive::Steam
             end
 
             # Handle Custom Setting Types
-            if memo['custom_setting_types'].present?
+            load_custom_setting_types
+
+            if @custom_setting_types.present?
               if definition['settings'].present?
                 definition['settings'].each_with_index do |setting, i|
                   if setting['type'].present?
-                    custom_setting_type = memo['custom_setting_type'].detect{|x| x['type'] == setting['type']}
+                    custom_setting_type = @custom_setting_types.detect{|x| x['type'] == setting['type']}
 
                     if custom_setting_type
                       definition['settings'][i] = custom_setting_type.merge(setting)
@@ -60,7 +64,7 @@ module Locomotive::Steam
                   if block_def['settings'].present?
                     block_def['settings'].each_with_index do |setting, i2|
                       if setting['type'].present?
-                        custom_setting_type = memo['custom_setting_type'].detect{|x| x['type'] == setting['type']}
+                        custom_setting_type = @custom_setting_types.detect{|x| x['type'] == setting['type']}
 
                         if custom_setting_type
                           definition['blocks'][i]['settings'][i2] = custom_setting_type.merge(setting)
@@ -78,6 +82,33 @@ module Locomotive::Steam
           def raise_parsing_error(entity, content)
             message = 'Your section requires a valid JSON header'
             raise Locomotive::Steam::ParsingRenderingError.new(message, entity.template_path, content, 0, nil)
+          end
+
+          private
+
+          def load_custom_setting_types
+            @custom_setting_types ||= begin
+              Dir.glob(File.join(site_path, 'config', 'custom_setting_types', "*.json")).map do |filepath|
+                if File.exists?(path)
+                  json = File.read(path)
+
+                  begin
+                    json = MultiJson.load(json)
+                  rescue MultiJson::ParseError => e
+                    raise Locomotive::Steam::JsonParsingError.new(e, path, json)
+                  end
+                else
+                  json = {}
+                end
+
+                slug = File.basename(filepath).split('.').first
+
+                {
+                  type: slug,
+                  json: json 
+                }
+              end
+            end
           end
 
         end
