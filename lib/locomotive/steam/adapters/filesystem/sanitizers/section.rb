@@ -62,25 +62,6 @@ module Locomotive::Steam
               definition['blocks'][i]['settings'] ||= {}
             end
 
-            # Fallback to use setting `default` key for Standalone/Global section settings and block settings
-            definition['settings'].each do |setting|
-              if setting.key?('default') && !definition['default']['settings'].key?(setting['id'])
-                definition['default']['settings'][setting['id']] = setting['default']
-              end
-            end
-
-            definition['default']['blocks'].each_with_index do |default_block, i|
-              type_block_def = definition['blocks'].detect{|x| x['type'] == default_block['type']}
-
-              if type_block_def
-                type_block_def['settings'].each do |setting|
-                  if setting.key?('default') && !default_block['settings'].key?(setting['id'])
-                    definition['default']['blocks'][i]['settings'][setting['id']] = setting['default']
-                  end
-                end
-              end
-            end
-
             # Handle Custom Setting Types
             load_custom_field_types
 
@@ -109,6 +90,25 @@ module Locomotive::Steam
                         end
                       end
                     end
+                  end
+                end
+              end
+            end
+
+            # Fallback to use setting `default` key for Standalone/Global section settings and block settings
+            definition['settings'].each do |setting|
+              if setting.key?('default') && !definition['default']['settings'].key?(setting['id'])
+                definition['default']['settings'][setting['id']] = setting['default']
+              end
+            end
+
+            definition['default']['blocks'].each_with_index do |default_block, i|
+              type_block_def = definition['blocks'].detect{|x| x['type'] == default_block['type']}
+
+              if type_block_def
+                type_block_def['settings'].each do |setting|
+                  if setting.key?('default') && !default_block['settings'].key?(setting['id'])
+                    definition['default']['blocks'][i]['settings'][setting['id']] = setting['default']
                   end
                 end
               end

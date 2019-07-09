@@ -54,13 +54,13 @@ module Locomotive::Steam
         def load_custom_field_types
           @custom_field_types ||= begin
             Dir.glob(File.join(site_path, 'config', 'custom_field_types', "*.json")).map do |filepath|
-              if File.exists?(path)
-                json = File.read(path)
+              if File.exists?(filepath)
+                json = File.read(filepath)
 
                 begin
                   json = MultiJson.load(json)
                 rescue MultiJson::ParseError => e
-                  raise Locomotive::Steam::JsonParsingError.new(e, path, json)
+                  raise Locomotive::Steam::JsonParsingError.new(e, filepath, json)
                 end
               else
                 json = {}
