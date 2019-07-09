@@ -48,10 +48,10 @@ module Locomotive::Steam
               if definition['settings'].present?
                 definition['settings'].each_with_index do |setting, i|
                   if setting['type'].present?
-                    custom_field_type = custom_field_types.detect{|x| x['slug'] == setting['type']}
+                    custom_field_type = custom_field_types.detect{|x| x[:slug] == setting['type']}
 
                     if custom_field_type
-                      definition['settings'][i] = custom_field_type['definition'].merge(setting)
+                      definition['settings'][i] = custom_field_type[:definition].merge(setting)
                     end
                   end
                 end
@@ -62,10 +62,10 @@ module Locomotive::Steam
                   if block_def['settings'].present?
                     block_def['settings'].each_with_index do |setting, i2|
                       if setting['type'].present?
-                        custom_field_type = custom_field_types.detect{|x| x['slug'] == setting['type']}
+                        custom_field_type = custom_field_types.detect{|x| x[:slug] == setting['type']}
 
                         if custom_field_type
-                          definition['blocks'][i]['settings'][i2] = custom_field_type['definition'].merge(setting)
+                          definition['blocks'][i]['settings'][i2] = custom_field_type[:definition].merge(setting)
                         end
                       end
                     end

@@ -68,8 +68,8 @@ module Locomotive::Steam
             slug = File.basename(filepath).split('.').first
 
             {
-              "slug" => slug,
-              "definition" => json,
+              slug: slug,
+              definition: json,
             }
           end
         end
