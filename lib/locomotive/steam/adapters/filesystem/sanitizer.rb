@@ -51,9 +51,9 @@ module Locomotive::Steam
 
         private
 
-        def load_custom_setting_types
-          @custom_setting_types ||= begin
-            Dir.glob(File.join(site_path, 'config', 'custom_setting_types', "*.json")).map do |filepath|
+        def load_custom_field_types
+          @custom_field_types ||= begin
+            Dir.glob(File.join(site_path, 'config', 'custom_field_types', "*.json")).map do |filepath|
               if File.exists?(path)
                 json = File.read(path)
 
