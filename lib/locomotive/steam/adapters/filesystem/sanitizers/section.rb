@@ -6,6 +6,8 @@ module Locomotive::Steam
 
           include Adapters::Filesystem::Sanitizer
 
+          attr_reader :custom_setting_types
+
           def apply_to_entity(entity)
             super
             parse_json(entity)
@@ -74,6 +76,39 @@ module Locomotive::Steam
                 type_block_def['settings'].each do |setting|
                   if setting.key?('default') && !default_block['settings'].key?(setting['id'])
                     definition['default']['blocks'][i]['settings'][setting['id']] = setting['default']
+                  end
+                end
+              end
+            end
+
+            # Handle Custom Setting Types
+            load_custom_setting_types
+
+            if @custom_setting_types.present?
+              if definition['settings'].present?
+                definition['settings'].each_with_index do |setting, i|
+                  if setting['type'].present?
+                    custom_setting_type = @custom_setting_types.detect{|x| x['type'] == setting['type']}
+
+                    if custom_setting_type
+                      definition['settings'][i] = custom_setting_type['definition'].merge(setting)
+                    end
+                  end
+                end
+              end
+
+              if definition['blocks'].present?
+                definition['blocks'].each_with_index do |block_def, i|
+                  if block_def['settings'].present?
+                    block_def['settings'].each_with_index do |setting, i2|
+                      if setting['type'].present?
+                        custom_setting_type = @custom_setting_types.detect{|x| x['type'] == setting['type']}
+
+                        if custom_setting_type
+                          definition['blocks'][i]['settings'][i2] = custom_setting_type['definition'].merge(setting)
+                        end
+                      end
+                    end
                   end
                 end
               end

@@ -124,7 +124,7 @@ module Locomotive::Steam
     def build_sanitizers
       hash = Hash.new { build_klass('Sanitizers', :simple).new }
       %i(sites pages content_types content_entries snippets sections).inject(hash) do |memo, name|
-        memo[name] = build_klass('Sanitizers', name).new
+        memo[name] = build_klass('Sanitizers', name).new(site_path)
         memo
       end
     end
