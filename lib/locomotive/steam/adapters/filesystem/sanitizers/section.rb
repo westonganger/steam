@@ -41,6 +41,37 @@ module Locomotive::Steam
               definition['default'] = default
             end
 
+            # Handle Custom Setting Types
+            if memo['custom_setting_types'].present?
+              if definition['settings'].present?
+                definition['settings'].each_with_index do |setting, i|
+                  if setting['type'].present?
+                    custom_setting_type = memo['custom_setting_type'].detect{|x| x['type'] == setting['type']}
+
+                    if custom_setting_type
+                      definition['settings'][i] = custom_setting_type.merge(setting)
+                    end
+                  end
+                end
+              end
+
+              if definition['blocks'].present?
+                definition['blocks'].each_with_index do |block_def, i|
+                  if block_def['settings'].present?
+                    block_def['settings'].each_with_index do |setting, i2|
+                      if setting['type'].present?
+                        custom_setting_type = memo['custom_setting_type'].detect{|x| x['type'] == setting['type']}
+
+                        if custom_setting_type
+                          definition['blocks'][i]['settings'][i2] = custom_setting_type.merge(setting)
+                        end
+                      end
+                    end
+                  end
+                end
+              end
+            end
+
             definition
           end
 
