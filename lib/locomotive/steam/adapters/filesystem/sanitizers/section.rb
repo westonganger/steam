@@ -6,8 +6,6 @@ module Locomotive::Steam
 
           include Adapters::Filesystem::Sanitizer
 
-          attr_reader :custom_field_types
-
           def apply_to_entity(entity)
             super
             parse_json(entity)
@@ -63,16 +61,16 @@ module Locomotive::Steam
             end
 
             # Handle Custom Setting Types
-            load_custom_field_types
+            custom_field_types = load_custom_field_types
 
-            if @custom_field_types.present?
+            if custom_field_types.present?
               if definition['settings'].present?
                 definition['settings'].each_with_index do |setting, i|
                   if setting['type'].present?
-                    custom_setting_type = @custom_field_types.detect{|x| x['type'] == setting['type']}
+                    custom_field_type = custom_field_types.detect{|x| x['slug'] == setting['type']}
 
-                    if custom_setting_type
-                      definition['settings'][i] = custom_setting_type['definition'].merge(setting)
+                    if custom_field_type
+                      definition['settings'][i] = custom_field_type['definition'].merge(setting)
                     end
                   end
                 end
@@ -83,10 +81,10 @@ module Locomotive::Steam
                   if block_def['settings'].present?
                     block_def['settings'].each_with_index do |setting, i2|
                       if setting['type'].present?
-                        custom_setting_type = @custom_field_types.detect{|x| x['type'] == setting['type']}
+                        custom_field_type = custom_field_types.detect{|x| x['slug'] == setting['type']}
 
-                        if custom_setting_type
-                          definition['blocks'][i]['settings'][i2] = custom_setting_type['definition'].merge(setting)
+                        if custom_field_type
+                          definition['blocks'][i]['settings'][i2] = custom_field_type['definition'].merge(setting)
                         end
                       end
                     end

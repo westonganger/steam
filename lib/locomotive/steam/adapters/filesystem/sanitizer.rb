@@ -52,27 +52,25 @@ module Locomotive::Steam
         private
 
         def load_custom_field_types
-          @custom_field_types ||= begin
-            Dir.glob(File.join(site_path, 'config', 'custom_field_types', "*.json")).map do |filepath|
-              if File.exists?(filepath)
-                json = File.read(filepath)
+          Dir.glob(File.join(site_path, 'config', 'custom_field_types', "*.json")).map do |filepath|
+            if File.exists?(filepath)
+              json = File.read(filepath)
 
-                begin
-                  json = MultiJson.load(json)
-                rescue MultiJson::ParseError => e
-                  raise Locomotive::Steam::JsonParsingError.new(e, filepath, json)
-                end
-              else
-                json = {}
+              begin
+                json = MultiJson.load(json)
+              rescue MultiJson::ParseError => e
+                raise Locomotive::Steam::JsonParsingError.new(e, filepath, json)
               end
-
-              slug = File.basename(filepath).split('.').first
-
-              {
-                type: slug,
-                definition: json 
-              }
+            else
+              json = {}
             end
+
+            slug = File.basename(filepath).split('.').first
+
+            {
+              "slug" => slug,
+              "definition" => json,
+            }
           end
         end
 
