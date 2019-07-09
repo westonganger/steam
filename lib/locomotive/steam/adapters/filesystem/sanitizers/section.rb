@@ -53,7 +53,7 @@ module Locomotive::Steam
                     custom_setting_type = @custom_setting_types.detect{|x| x['type'] == setting['type']}
 
                     if custom_setting_type
-                      definition['settings'][i] = custom_setting_type.merge(setting)
+                      definition['settings'][i] = custom_setting_type['definition'].merge(setting)
                     end
                   end
                 end
@@ -67,7 +67,7 @@ module Locomotive::Steam
                         custom_setting_type = @custom_setting_types.detect{|x| x['type'] == setting['type']}
 
                         if custom_setting_type
-                          definition['blocks'][i]['settings'][i2] = custom_setting_type.merge(setting)
+                          definition['blocks'][i]['settings'][i2] = custom_setting_type['definition'].merge(setting)
                         end
                       end
                     end
@@ -105,7 +105,7 @@ module Locomotive::Steam
 
                 {
                   type: slug,
-                  json: json 
+                  definition: json 
                 }
               end
             end

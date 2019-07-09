@@ -21,7 +21,6 @@ module Locomotive::Steam
     end
 
     register(:yaml_loaders)  { build_yaml_loaders }
-    register(:json_loaders)  { build_json_loaders }
     register(:sanitizers)    { build_sanitizers }
 
     def all(mapper, scope)
@@ -120,10 +119,6 @@ module Locomotive::Steam
         memo[name] = build_klass('YAMLLoaders', name).new(site_path, env)
         memo
       end
-    end
-
-    def build_json_loaders
-      memo['custom_setting_types'] = JSONLoaders::CustomSettingTypes.new(site_path, env)
     end
 
     def build_sanitizers
