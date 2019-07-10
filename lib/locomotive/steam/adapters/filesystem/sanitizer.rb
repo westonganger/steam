@@ -49,8 +49,6 @@ module Locomotive::Steam
           entity[:site_id] = scope.site._id if scope.site
         end
 
-        private
-
         def load_custom_field_types
           Dir.glob(File.join(site_path, 'config', 'custom_field_types', "*.json")).map do |filepath|
             if File.exists?(filepath)
