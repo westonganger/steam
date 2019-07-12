@@ -5,11 +5,11 @@ module Locomotive
         module Misc
 
           def blank?(input)
-            input.to_s.strip.blank?
+            input.blank?
           end
 
           def present?(input)
-            input.to_s.strip.present?
+            input.present?
           end
 
           # was called modulo at first
