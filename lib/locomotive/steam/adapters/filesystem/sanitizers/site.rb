@@ -61,7 +61,7 @@ module Locomotive::Steam
 
                 entity.metafields ||= {}
                 entity.metafields[namespace[:name]] ||= {}
-                entity.metafields[namespace[:name]][field[:name]] = field[:sample]
+                entity.metafields[namespace[:name]][field[:name]] ||= field[:sample]
               end
             end
           end
